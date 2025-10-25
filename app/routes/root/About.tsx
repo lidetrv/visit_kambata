@@ -145,7 +145,7 @@ export default function Blog() {
               target="_blank"
             >
               <img
-                src="/public/assets/images/kem_map.jpg"
+                src="/assets/images/Kem_map.jpg"
                 alt="Map of Kembata Tembaro Zone"
                 className="w-full max-h-96 object-cover rounded-lg bg-white" />
             </a>

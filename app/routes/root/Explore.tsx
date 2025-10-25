@@ -118,11 +118,11 @@ const Explore = ({loaderData}: Route.ComponentProps) => {
               </section>
               <section>
                 <div>
-                  <h1 className='text-dark-100 font-bold text-5xl text-center justify-center mt-20'>Hotels</h1>
+                  <h1 className='text-dark-100 font-bold text-5xl text-center justify-center lg:mt-20'>Hotels</h1>
                 </div>
-                <div className='flex mt-8'>
+                <div className='lg:flex mt-8'>
                   <div
-  className="relative mx-auto w-full max-w-xs rounded-3xl border border-zinc-200 bg-white ring-4 ring-zinc-300/25"
+  className="relative mx-auto w-full max-w-xs rounded-3xl border border-zinc-200 bg-white ring-4 ring-zinc-300/25 mb-8"
 >
   <div className="relative overflow-hidden rounded-3xl bg-white">
     <div className="relative overflow-hidden">
@@ -330,10 +330,10 @@ const Explore = ({loaderData}: Route.ComponentProps) => {
       <div className="flex items-center justify-between">
         <div>
           <div className="flex items-baseline gap-1">
-            <span className="text-2xl font-bold text-zinc-800 invisible">$89</span>
-            <span className="text-xs text-zinc-600 invisible">/person</span>
+            <span className="text-2xl font-bold text-zinc-800 invisible"></span>
+            <span className="text-xs text-zinc-600 invisible"></span>
           </div>
-          <p className="text-xs text-emerald-600 invisible">Free cancellation</p>
+          <p className="text-xs text-emerald-600 invisible"></p>
         </div>
         <button
           type="button"
@@ -350,7 +350,7 @@ const Explore = ({loaderData}: Route.ComponentProps) => {
 
                 </div>
                 <div
-  className="relative mx-auto w-full max-w-xs rounded-3xl border border-zinc-200 bg-white ring-4 ring-zinc-300/25"
+  className="relative mx-auto w-full max-w-xs rounded-3xl border border-zinc-200 bg-white ring-4 ring-zinc-300/25 mb-8"
 >
   <div className="relative overflow-hidden rounded-3xl bg-white">
     <div className="relative overflow-hidden">
@@ -579,7 +579,7 @@ const Explore = ({loaderData}: Route.ComponentProps) => {
 
                 </div>
                 <div
-  className="relative mx-auto w-full max-w-xs rounded-3xl border border-zinc-200 bg-white ring-4 ring-zinc-300/25"
+  className="relative mx-auto w-full max-w-xs rounded-3xl border border-zinc-200 bg-white ring-4 ring-zinc-300/25 mb-8"
 >
   <div className="relative overflow-hidden rounded-3xl bg-white">
     <div className="relative overflow-hidden">
