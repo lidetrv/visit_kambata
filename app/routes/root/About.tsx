@@ -18,7 +18,7 @@ import { cn } from "~/lib/utils";
 
 // Helper component for the Footer
 const Footer = () => (
-  <footer className="bg-green-700 text-white py-10 text-center">
+  <footer className="bg-green-300 text-white py-10 text-center">
     <div className="flex justify-center space-x-6 mb-6 text-2xl">
       <FaInstagram className="hover:text-green-300 cursor-pointer transition" />
       <FaFacebookF className="hover:text-green-300 cursor-pointer transition" />
@@ -116,11 +116,11 @@ export default function Blog() {
       </section>
 
       {/* Hero Header - Retained */}
-      <header className="bg-green-200 p-6 m-6 text-black py-16 text-center shadow-lg rounded-2xl mt-16 lg:mt-24">
+      <header className="bg-white p-6 m-6 text-black py-16 text-center shadow-lg rounded-2xl mt-16 lg:mt-24">
         <h3 className="text-4xl font-bold mb-6 text-green-500 font-figtree">
           🧭 About Us
         </h3>
-        <p className="text-lg opacity-90 max-w-3xl mx-auto text-black">
+        <p className="text-lg bg-green-200 opacity-90 max-w-3xl mx-auto text-black rounded-2xl p-2 py-2">
           Welcome to Visit Kembata, your guide to exploring the beauty and
           culture of Kembata! We showcase the region’s breathtaking landscapes,
           rich traditions, and warm hospitality. Our mission is to promote local
@@ -128,7 +128,7 @@ export default function Blog() {
           Kembata’s hidden gems and make memories that last a lifetime.
         </p>
 
-        <p className="text-lg opacity-90 max-w-3xl mx-auto text-black">
+        <p className="text-lg bg-green-200 opacity-90 max-w-3xl mx-auto text-black rounded-2xl p-2 py-2 m-3">
           Visit Kembata is a local travel agency dedicated to showcasing the
           hidden beauty of the Kembata Zone and nearby regions. Founded by{" "}
           <span className="text-dark-100 font-bold">Samson Thomas</span>, we
@@ -336,7 +336,7 @@ export default function Blog() {
         <form
           action="#"
           method="post"
-          className="bg-white shadow-2xl rounded-xl p-8 w-full max-w-md border-t-8 border-green-600"
+          className="bg-white shadow-2xl rounded-xl p-8 w-full max-w-md border-t-8 border-green-600  m-3"
         >
           <div className="mb-6 text-center">
             <h4 className="text-2xl font-bold text-green-700 mb-3">

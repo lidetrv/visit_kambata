@@ -32,6 +32,7 @@
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "dayjs": "^1.11.14",
+    "flowbite": "^4.0.0",
     "framer-motion": "^12.23.22",
     "gsap": "^3.13.0",
     "isbot": "^5.1.27",

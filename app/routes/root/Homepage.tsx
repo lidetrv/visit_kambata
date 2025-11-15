@@ -18,6 +18,11 @@ import { getAllPosts } from "~/appwrite/posts";
 import { getUser } from "~/appwrite/auth";
 import type { Route } from "./+types/Homepage";
 import Carousel from "./Carousel";
+//flow bite imports
+import "flowbite";
+import { useEffect } from "react"; // ⭐ add this here (new)
+import { initFlowbite } from "flowbite"; // ⭐ add this here (new)
+import TestimonialCarousel from "./TestimonialCarousel";
 
 export const clientLoader = async () => {
   const [user, posts] = await Promise.all([getUser(), getAllPosts(3, 0)]);
@@ -77,6 +82,11 @@ export default function HomePage({ loaderData }: Route.ComponentProps) {
   const user = loaderData.user as User | null;
   const { allPosts } = loaderData;
   console.log("allPosts", allPosts);
+
+  // ⭐Initialize Flowbite(new)
+  useEffect(() => {
+    initFlowbite();
+  }, []);
 
   // const user = useLoaderData();
   const navigate = useNavigate();
@@ -185,45 +195,18 @@ export default function HomePage({ loaderData }: Route.ComponentProps) {
       </section>
 
       {/* Hero Section */}
-      <section className="relative h-[30vh] bg-cover bg-center flex items-center justify-center text-center text-white">
-        <div className=" bg-opacity-20 p-10 rounded-xl mx-4  backdrop-blur-2xl">
-          <motion.h2
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
-            className="text-2xl md:text-6xl font-bold mb-6 text-dark-100"
-          >
-            Discover Your Next Adventure
-          </motion.h2>
-          <motion.p
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 1 }}
-            className="text-md mb-8 text-dark-400 font-semibold"
-          >
-            Explore breathtaking destinations, thrilling adventures, and
-            unforgettable journeys.
-          </motion.p>
-          <motion.button
-            whileHover={{ scale: 1.05 }}
-            className="bg-green-600 hover:bg-green-700 text-white px-8 py-3 rounded-full font-semibold transition-all shadow-lg"
-          >
-            Start Exploring
-          </motion.button>
-        </div>
-      </section>
 
       {/* Destinations Grid */}
-      <section className="py-16 bg-gray-50 mx-4">
+      {/* <section className="py-16 bg-gray-50 mx-4">
         <div></div>
-      </section>
+      </section> */}
       <section>
-        <div className="flex justify-center items-center my-10 gap-6 flex-wrap mx-4">
+        <div className="flex justify-center items-center my-1 gap-2 flex-wrap mx-2">
           {allPosts
             .slice(0, 4)
             .map(
               ({ id, title, tags, imageUrls, titleDescription, createdAt }) => (
-                <div className="flex justify-center items-center my-10 gap-6 flex-wrap mx-4">
+                <div className="flex justify-center items-center my-5 gap-6 flex-wrap mx-2">
                   <Link
                     to={
                       path.pathname === "/" || path.pathname.startsWith("/home")
@@ -233,7 +216,7 @@ export default function HomePage({ loaderData }: Route.ComponentProps) {
                     className="trip-card"
                   ></Link>
                   <div className="relative mx-auto w-full max-w-sm rounded-3xl border border-slate-200 bg-white ring-4 ring-slate-300/25">
-                    <div className="flex flex-col gap-4 rounded-xl p-6">
+                    <div className="flex flex-col gap-4 rounded-xl p-0">
                       <a href="/blogs" className="group relative">
                         <div className="absolute inset-0 z-10 flex items-center justify-center rounded-xl bg-black/50 text-white opacity-0 transition-opacity duration-200 group-hover:opacity-100 group-active:opacity-90">
                           <svg
@@ -261,10 +244,10 @@ export default function HomePage({ loaderData }: Route.ComponentProps) {
                         />
                       </a>
                       <div className="grow">
-                        <div className="mb-1.5 text-sm font-medium text-slate-500">
+                        <div className="mb-1.5 text-sm font-medium text-slate-500 mx-2">
                           {formatDate(createdAt)} ∙ 20 min read
                         </div>
-                        <h2 className="mb-2 text-xl font-extrabold text-dark-100 font-figtree">
+                        <h2 className="mb-2 text-xl font-extrabold text-green-400 font-figtree mx-2">
                           <a
                             href="/blogs"
                             className="hover:opacity-75 active:opacity-100"
@@ -281,7 +264,7 @@ export default function HomePage({ loaderData }: Route.ComponentProps) {
                             {title}
                           </a>
                         </h2>
-                        <p className="text-md font-semibold leading-relaxed text-slate-500">
+                        <p className="text-md font-semibold leading-relaxed text-slate-500 mx-2">
                           {titleDescription}
                         </p>
                       </div>
@@ -725,299 +708,8 @@ export default function HomePage({ loaderData }: Route.ComponentProps) {
 
       {/* Testimonials */}
       <section className="py-16 bg-gray-50">
-        {/* <h3 className="text-3xl font-bold text-center mb-10 text-green-700">
-          What Our Travelers Say
-        </h3>
-        <div className="grid md:grid-cols-3 gap-8 px-6 md:px-16">
-          {[
-            {
-              name: "Sarah Johnson",
-              text: "AdventureX gave me an unforgettable experience! The guides were amazing and the locations were breathtaking.",
-            },
-            {
-              name: "David Kim",
-              text: "I’ve traveled with many agencies, but AdventureX stands out for their attention to detail and passion for adventure.",
-            },
-            {
-              name: "Emily Carter",
-              text: "From mountains to beaches, every trip I’ve taken with AdventureX has been incredible!",
-            },
-          ].map((t, i) => (
-            <div
-              key={i}
-              className="bg-white p-6 rounded-2xl shadow-md hover:shadow-lg transition-all text-center"
-            >
-              <p className="italic text-gray-600 mb-4">“{t.text}”</p>
-              <h5 className="font-semibold text-green-700">{t.name}</h5>
-            </div>
-          ))}
-        </div> */}
-        <div className="lg:flex items-center justify-center mx-4">
-          <div className="mx-auto w-full max-w-sm rounded-3xl bg-white/40 p-6 shadow-sm shadow-zinc-300 backdrop-blur-xs mb-2">
-            <div className="flex flex-col gap-5 rounded-xl bg-white p-10 text-center shadow-sm">
-              <div className="flex items-center justify-center gap-1 text-amber-500">
-                <svg
-                  className="hi-mini hi-star relative top-1.5 inline-block size-7"
-                  xmlns="http://www.w3.org/2000/svg"
-                  viewBox="0 0 20 20"
-                  fill="currentColor"
-                  aria-hidden="true"
-                >
-                  <path
-                    fill-rule="evenodd"
-                    d="M10.868 2.884c-.321-.772-1.415-.772-1.736 0l-1.83 4.401-4.753.381c-.833.067-1.171 1.107-.536 1.651l3.62 3.102-1.106 4.637c-.194.813.691 1.456 1.405 1.02L10 15.591l4.069 2.485c.713.436 1.598-.207 1.404-1.02l-1.106-4.637 3.62-3.102c.635-.544.297-1.584-.536-1.65l-4.752-.382-1.831-4.401z"
-                    clip-rule="evenodd"
-                  />
-                </svg>
-                <svg
-                  className="hi-mini hi-star relative top-0.5 inline-block size-7"
-                  xmlns="http://www.w3.org/2000/svg"
-                  viewBox="0 0 20 20"
-                  fill="currentColor"
-                  aria-hidden="true"
-                >
-                  <path
-                    fill-rule="evenodd"
-                    d="M10.868 2.884c-.321-.772-1.415-.772-1.736 0l-1.83 4.401-4.753.381c-.833.067-1.171 1.107-.536 1.651l3.62 3.102-1.106 4.637c-.194.813.691 1.456 1.405 1.02L10 15.591l4.069 2.485c.713.436 1.598-.207 1.404-1.02l-1.106-4.637 3.62-3.102c.635-.544.297-1.584-.536-1.65l-4.752-.382-1.831-4.401z"
-                    clip-rule="evenodd"
-                  />
-                </svg>
-                <svg
-                  className="hi-mini hi-star inline-block size-7"
-                  xmlns="http://www.w3.org/2000/svg"
-                  viewBox="0 0 20 20"
-                  fill="currentColor"
-                  aria-hidden="true"
-                >
-                  <path
-                    fill-rule="evenodd"
-                    d="M10.868 2.884c-.321-.772-1.415-.772-1.736 0l-1.83 4.401-4.753.381c-.833.067-1.171 1.107-.536 1.651l3.62 3.102-1.106 4.637c-.194.813.691 1.456 1.405 1.02L10 15.591l4.069 2.485c.713.436 1.598-.207 1.404-1.02l-1.106-4.637 3.62-3.102c.635-.544.297-1.584-.536-1.65l-4.752-.382-1.831-4.401z"
-                    clip-rule="evenodd"
-                  />
-                </svg>
-                <svg
-                  className="hi-mini hi-star relative top-0.5 inline-block size-7"
-                  xmlns="http://www.w3.org/2000/svg"
-                  viewBox="0 0 20 20"
-                  fill="currentColor"
-                  aria-hidden="true"
-                >
-                  <path
-                    fill-rule="evenodd"
-                    d="M10.868 2.884c-.321-.772-1.415-.772-1.736 0l-1.83 4.401-4.753.381c-.833.067-1.171 1.107-.536 1.651l3.62 3.102-1.106 4.637c-.194.813.691 1.456 1.405 1.02L10 15.591l4.069 2.485c.713.436 1.598-.207 1.404-1.02l-1.106-4.637 3.62-3.102c.635-.544.297-1.584-.536-1.65l-4.752-.382-1.831-4.401z"
-                    clip-rule="evenodd"
-                  />
-                </svg>
-                <svg
-                  className="hi-mini hi-star relative top-1.5 inline-block size-7"
-                  xmlns="http://www.w3.org/2000/svg"
-                  viewBox="0 0 20 20"
-                  fill="currentColor"
-                  aria-hidden="true"
-                >
-                  <path
-                    fill-rule="evenodd"
-                    d="M10.868 2.884c-.321-.772-1.415-.772-1.736 0l-1.83 4.401-4.753.381c-.833.067-1.171 1.107-.536 1.651l3.62 3.102-1.106 4.637c-.194.813.691 1.456 1.405 1.02L10 15.591l4.069 2.485c.713.436 1.598-.207 1.404-1.02l-1.106-4.637 3.62-3.102c.635-.544.297-1.584-.536-1.65l-4.752-.382-1.831-4.401z"
-                    clip-rule="evenodd"
-                  />
-                </svg>
-              </div>
-              <p className="text-xl/relaxed font-semibold text-black">
-                “Intuitive interface. Lightning-fast performance. Reliable
-                security. Perfect for any business.”
-              </p>
-              <img
-                src="https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?q=80&w=160&h=160&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-                alt="Avatar"
-                className="mx-auto aspect-square w-20 rounded-full object-cover shadow-sm ring-4 ring-amber-500/50"
-              />
-              <div className="text-sm">
-                <a
-                  href="javascript:void(0)"
-                  className="text-lg font-semibold text-black hover:text-zinc-600"
-                >
-                  Michael Thompson
-                </a>
-                s
-              </div>
-            </div>
-          </div>
-          <div className="mx-auto w-full max-w-sm rounded-3xl bg-white/40 p-6 mb-2 shadow-sm shadow-zinc-300 backdrop-blur-xs">
-            <div className="flex flex-col gap-5 rounded-xl bg-white p-10 text-center shadow-sm">
-              <div className="flex items-center justify-center gap-1 text-amber-500">
-                <svg
-                  className="hi-mini hi-star relative top-1.5 inline-block size-7"
-                  xmlns="http://www.w3.org/2000/svg"
-                  viewBox="0 0 20 20"
-                  fill="currentColor"
-                  aria-hidden="true"
-                >
-                  <path
-                    fill-rule="evenodd"
-                    d="M10.868 2.884c-.321-.772-1.415-.772-1.736 0l-1.83 4.401-4.753.381c-.833.067-1.171 1.107-.536 1.651l3.62 3.102-1.106 4.637c-.194.813.691 1.456 1.405 1.02L10 15.591l4.069 2.485c.713.436 1.598-.207 1.404-1.02l-1.106-4.637 3.62-3.102c.635-.544.297-1.584-.536-1.65l-4.752-.382-1.831-4.401z"
-                    clip-rule="evenodd"
-                  />
-                </svg>
-                <svg
-                  className="hi-mini hi-star relative top-0.5 inline-block size-7"
-                  xmlns="http://www.w3.org/2000/svg"
-                  viewBox="0 0 20 20"
-                  fill="currentColor"
-                  aria-hidden="true"
-                >
-                  <path
-                    fill-rule="evenodd"
-                    d="M10.868 2.884c-.321-.772-1.415-.772-1.736 0l-1.83 4.401-4.753.381c-.833.067-1.171 1.107-.536 1.651l3.62 3.102-1.106 4.637c-.194.813.691 1.456 1.405 1.02L10 15.591l4.069 2.485c.713.436 1.598-.207 1.404-1.02l-1.106-4.637 3.62-3.102c.635-.544.297-1.584-.536-1.65l-4.752-.382-1.831-4.401z"
-                    clip-rule="evenodd"
-                  />
-                </svg>
-                <svg
-                  className="hi-mini hi-star inline-block size-7"
-                  xmlns="http://www.w3.org/2000/svg"
-                  viewBox="0 0 20 20"
-                  fill="currentColor"
-                  aria-hidden="true"
-                >
-                  <path
-                    fill-rule="evenodd"
-                    d="M10.868 2.884c-.321-.772-1.415-.772-1.736 0l-1.83 4.401-4.753.381c-.833.067-1.171 1.107-.536 1.651l3.62 3.102-1.106 4.637c-.194.813.691 1.456 1.405 1.02L10 15.591l4.069 2.485c.713.436 1.598-.207 1.404-1.02l-1.106-4.637 3.62-3.102c.635-.544.297-1.584-.536-1.65l-4.752-.382-1.831-4.401z"
-                    clip-rule="evenodd"
-                  />
-                </svg>
-                <svg
-                  className="hi-mini hi-star relative top-0.5 inline-block size-7"
-                  xmlns="http://www.w3.org/2000/svg"
-                  viewBox="0 0 20 20"
-                  fill="currentColor"
-                  aria-hidden="true"
-                >
-                  <path
-                    fill-rule="evenodd"
-                    d="M10.868 2.884c-.321-.772-1.415-.772-1.736 0l-1.83 4.401-4.753.381c-.833.067-1.171 1.107-.536 1.651l3.62 3.102-1.106 4.637c-.194.813.691 1.456 1.405 1.02L10 15.591l4.069 2.485c.713.436 1.598-.207 1.404-1.02l-1.106-4.637 3.62-3.102c.635-.544.297-1.584-.536-1.65l-4.752-.382-1.831-4.401z"
-                    clip-rule="evenodd"
-                  />
-                </svg>
-                <svg
-                  className="hi-mini hi-star relative top-1.5 inline-block size-7"
-                  xmlns="http://www.w3.org/2000/svg"
-                  viewBox="0 0 20 20"
-                  fill="currentColor"
-                  aria-hidden="true"
-                >
-                  <path
-                    fill-rule="evenodd"
-                    d="M10.868 2.884c-.321-.772-1.415-.772-1.736 0l-1.83 4.401-4.753.381c-.833.067-1.171 1.107-.536 1.651l3.62 3.102-1.106 4.637c-.194.813.691 1.456 1.405 1.02L10 15.591l4.069 2.485c.713.436 1.598-.207 1.404-1.02l-1.106-4.637 3.62-3.102c.635-.544.297-1.584-.536-1.65l-4.752-.382-1.831-4.401z"
-                    clip-rule="evenodd"
-                  />
-                </svg>
-              </div>
-              <p className="text-xl/relaxed font-semibold text-black">
-                “Intuitive interface. Lightning-fast performance. Reliable
-                security. Perfect for any business.”
-              </p>
-              <img
-                src="https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?q=80&w=160&h=160&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-                alt="Avatar"
-                className="mx-auto aspect-square w-20 rounded-full object-cover shadow-sm ring-4 ring-amber-500/50"
-              />
-              <div className="text-sm">
-                <a
-                  href="javascript:void(0)"
-                  className="text-lg font-semibold text-black hover:text-zinc-600"
-                >
-                  Michael Thompson
-                </a>
-              </div>
-            </div>
-          </div>
-          <div className="mx-auto w-full max-w-sm rounded-3xl bg-white/40 p-6 shadow-sm shadow-zinc-300 backdrop-blur-xs">
-            <div className="flex flex-col gap-5 rounded-xl bg-white p-10 text-center shadow-sm">
-              <div className="flex items-center justify-center gap-1 text-amber-500">
-                <svg
-                  className="hi-mini hi-star relative top-1.5 inline-block size-7"
-                  xmlns="http://www.w3.org/2000/svg"
-                  viewBox="0 0 20 20"
-                  fill="currentColor"
-                  aria-hidden="true"
-                >
-                  <path
-                    fill-rule="evenodd"
-                    d="M10.868 2.884c-.321-.772-1.415-.772-1.736 0l-1.83 4.401-4.753.381c-.833.067-1.171 1.107-.536 1.651l3.62 3.102-1.106 4.637c-.194.813.691 1.456 1.405 1.02L10 15.591l4.069 2.485c.713.436 1.598-.207 1.404-1.02l-1.106-4.637 3.62-3.102c.635-.544.297-1.584-.536-1.65l-4.752-.382-1.831-4.401z"
-                    clip-rule="evenodd"
-                  />
-                </svg>
-                <svg
-                  className="hi-mini hi-star relative top-0.5 inline-block size-7"
-                  xmlns="http://www.w3.org/2000/svg"
-                  viewBox="0 0 20 20"
-                  fill="currentColor"
-                  aria-hidden="true"
-                >
-                  <path
-                    fill-rule="evenodd"
-                    d="M10.868 2.884c-.321-.772-1.415-.772-1.736 0l-1.83 4.401-4.753.381c-.833.067-1.171 1.107-.536 1.651l3.62 3.102-1.106 4.637c-.194.813.691 1.456 1.405 1.02L10 15.591l4.069 2.485c.713.436 1.598-.207 1.404-1.02l-1.106-4.637 3.62-3.102c.635-.544.297-1.584-.536-1.65l-4.752-.382-1.831-4.401z"
-                    clip-rule="evenodd"
-                  />
-                </svg>
-                <svg
-                  className="hi-mini hi-star inline-block size-7"
-                  xmlns="http://www.w3.org/2000/svg"
-                  viewBox="0 0 20 20"
-                  fill="currentColor"
-                  aria-hidden="true"
-                >
-                  <path
-                    fill-rule="evenodd"
-                    d="M10.868 2.884c-.321-.772-1.415-.772-1.736 0l-1.83 4.401-4.753.381c-.833.067-1.171 1.107-.536 1.651l3.62 3.102-1.106 4.637c-.194.813.691 1.456 1.405 1.02L10 15.591l4.069 2.485c.713.436 1.598-.207 1.404-1.02l-1.106-4.637 3.62-3.102c.635-.544.297-1.584-.536-1.65l-4.752-.382-1.831-4.401z"
-                    clip-rule="evenodd"
-                  />
-                </svg>
-                <svg
-                  className="hi-mini hi-star relative top-0.5 inline-block size-7"
-                  xmlns="http://www.w3.org/2000/svg"
-                  viewBox="0 0 20 20"
-                  fill="currentColor"
-                  aria-hidden="true"
-                >
-                  <path
-                    fill-rule="evenodd"
-                    d="M10.868 2.884c-.321-.772-1.415-.772-1.736 0l-1.83 4.401-4.753.381c-.833.067-1.171 1.107-.536 1.651l3.62 3.102-1.106 4.637c-.194.813.691 1.456 1.405 1.02L10 15.591l4.069 2.485c.713.436 1.598-.207 1.404-1.02l-1.106-4.637 3.62-3.102c.635-.544.297-1.584-.536-1.65l-4.752-.382-1.831-4.401z"
-                    clip-rule="evenodd"
-                  />
-                </svg>
-                <svg
-                  className="hi-mini hi-star relative top-1.5 inline-block size-7"
-                  xmlns="http://www.w3.org/2000/svg"
-                  viewBox="0 0 20 20"
-                  fill="currentColor"
-                  aria-hidden="true"
-                >
-                  <path
-                    fill-rule="evenodd"
-                    d="M10.868 2.884c-.321-.772-1.415-.772-1.736 0l-1.83 4.401-4.753.381c-.833.067-1.171 1.107-.536 1.651l3.62 3.102-1.106 4.637c-.194.813.691 1.456 1.405 1.02L10 15.591l4.069 2.485c.713.436 1.598-.207 1.404-1.02l-1.106-4.637 3.62-3.102c.635-.544.297-1.584-.536-1.65l-4.752-.382-1.831-4.401z"
-                    clip-rule="evenodd"
-                  />
-                </svg>
-              </div>
-              <p className="text-xl/relaxed font-semibold text-black">
-                “Intuitive interface. Lightning-fast performance. Reliable
-                security. Perfect for any business.”
-              </p>
-              <img
-                src="https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?q=80&w=160&h=160&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-                alt="Avatar"
-                className="mx-auto aspect-square w-20 rounded-full object-cover shadow-sm ring-4 ring-amber-500/50"
-              />
-              <div className="text-sm">
-                <a
-                  href="javascript:void(0)"
-                  className="text-lg font-semibold text-black hover:text-zinc-600"
-                >
-                  Michael Thompson
-                </a>
-              </div>
-            </div>
-          </div>
+        <div>
+          <TestimonialCarousel />
         </div>
       </section>
 
