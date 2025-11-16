@@ -136,7 +136,7 @@ const BlogContent = ({ loaderData }: Route.ComponentProps) => {
           <h1 className="text-green-500 text-3xl lg:text-5xl font-bold my-10 text-center">
             Visit Kembata
           </h1>
-          <p className="font-semibold text-purple-400 bg-purple-200 px-10 py-4 w-sm rounded-2xl text-xl text-center items-center">
+          <p className="font-semibold lg:text-5xl text-purple-400 bg-purple-200 px-10 py-4  rounded-2xl text-xl text-center items-center">
             BLOG
           </p>
         </article>

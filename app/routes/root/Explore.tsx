@@ -126,7 +126,7 @@ const Explore = ({ loaderData }: Route.ComponentProps) => {
         </header>
       </section>
       {/* header */}
-      <section className="relative h-[30vh] bg-cover bg-center flex items-center justify-center text-center text-white p-20 mt-12">
+      <section className="relative h-[30vh] bg-cover bg-center flex items-center justify-center text-center text-white p-10 mt-12">
         <div className=" bg-opacity-20 p-10 rounded-xl mx-4  backdrop-blur-2xl">
           <motion.h2
             initial={{ opacity: 0, y: 30 }}
@@ -813,7 +813,7 @@ const Explore = ({ loaderData }: Route.ComponentProps) => {
             {/* Filwuha Hot Spring */}
             <div className="bg-white shadow-lg z-10 rounded-lg overflow-hidden">
               <img
-                src="assets/images/photo/filwuha.jpg"
+                src="assets/images/photo/gemesha.jpg"
                 alt="Filwuha Hot Spring"
                 className="w-full h-56 object-cover transition-transform duration-500 hover:scale-105"
               />
