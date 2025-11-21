@@ -146,7 +146,7 @@ const BlogContent = ({ loaderData }: Route.ComponentProps) => {
               key={post.id}
               id={post.id}
               name={post.title}
-              location={post.tags[0] || "No location"}
+              location={post.location || "No location"}
               imageUrl={post.imageUrls[0]}
               tags={post.tags || []}
               price={post.tags[0]}
