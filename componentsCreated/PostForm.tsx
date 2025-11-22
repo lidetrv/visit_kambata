@@ -350,7 +350,7 @@ const PostForm = () => {
                 </div>
               </FormControl>
               <FormDescription className="text-sm text-gray-100 mt-2.5">
-                Add up to 4 tags. Press Enter to add.
+                You can add up to 4 tags. Press Enter to add.
               </FormDescription>
               <FormMessage />
             </FormItem>

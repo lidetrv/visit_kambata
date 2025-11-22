@@ -20,8 +20,8 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
 
 const BlogContent = ({ loaderData }: Route.ComponentProps) => {
   const { posts, total, page } = loaderData;
-  const {postDetails} = parseTripData(posts) || {}
-  console.log('posts', posts);
+  const { postDetails } = parseTripData(posts) || {};
+  console.log("posts", posts);
 
   const [searchParams] = useSearchParams();
   const initialPage = Number(searchParams.get("page") || "1");
@@ -29,8 +29,7 @@ const BlogContent = ({ loaderData }: Route.ComponentProps) => {
   const handlePageChange = (page: number) => {
     setCurrentPage(page);
     window.location.search = `?page=${page}`;
-
-  }
+  };
 
   return (
     <main className="all-users wrapper">
@@ -42,26 +41,29 @@ const BlogContent = ({ loaderData }: Route.ComponentProps) => {
       /> */}
 
       <section>
-        <h1 className="p-24-semibold text-dark-100 mb-4">Manage Created BlogContent</h1>
+        <h1 className="p-24-semibold text-dark-100 mb-4">
+          Manage Created BlogContent
+        </h1>
         <div className="trip-grid mb-4">
-             {posts.map((post)=>(
-              <PostCard
+          {posts.map((post) => (
+            <PostCard
               key={post.id}
               id={post.id}
               name={post.title}
-              location={post.tags[0] || 'No location'}
+              location={post.location || "No location"}
               imageUrl={post.imageUrls[0]}
               tags={post.tags || []}
               price={post.tags[0]}
-              />
-             ))}
+            />
+          ))}
         </div>
         <PagerComponent
-        totalRecordsCount={total}
-        pageSize={8}
-        currentPage={currentPage}
-        click={(args)=> handlePageChange(args.currentPage)}
-        cssClass="!mb-4"/>
+          totalRecordsCount={total}
+          pageSize={8}
+          currentPage={currentPage}
+          click={(args) => handlePageChange(args.currentPage)}
+          cssClass="!mb-4"
+        />
       </section>
     </main>
   );
