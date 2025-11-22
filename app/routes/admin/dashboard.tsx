@@ -108,7 +108,7 @@ const dashboard = ({ loaderData }: Route.ComponentProps) => {
                 key={id}
                 id={id.toString()}
                 imageUrl={imageUrls?.[0]}
-                location={location || tags?.[0]} //use actual location field}
+                location={location || "No loaction"} //use actual location field}
                 tags={tags}
                 name={title}
                 price={tags?.[0]}
