@@ -270,7 +270,7 @@ export default function HomePage({ loaderData }: Route.ComponentProps) {
         </div>
       </section>
 
-      {/* About Section */}
+      {/* About Section will be edited */}
       <section className="py-20 px-6 md:px-20 bg-white text-center">
         <div className="relative mx-auto flex max-w-7xl flex-col gap-12 px-4 py-16 lg:px-8 lg:py-32">
           <div className="text-center">
