@@ -25,9 +25,9 @@ export async function clientLoader() {
 const AdminLayout = () => {
   return (
     <div className="admin-layout">
-      <MobileSidebar />
-      <aside className="w-full max-w-[270] hidden lg:block">
-        <SidebarComponent width={270} enableGestures={false}>
+      <MobileSidebar isAdmin={true} />
+      <aside className="w-[400px] hidden lg:block">
+        <SidebarComponent width={250} enableGestures={false}>
           <NavItems />
         </SidebarComponent>
       </aside>

@@ -71,7 +71,7 @@ const dashboard = ({ loaderData }: Route.ComponentProps) => {
   const { dashboardStats, allPosts, userGrowth, allUsers } = loaderData;
   console.log("allPosts", allPosts);
   return (
-    <main className="dashboard wrapper">
+    <main className="dashboard wrapper p-0 m-0">
       <Header
         title={`Welcome ${user?.name ?? "Guest"} 👋`}
         description="Track and Manage created posts in real time."
