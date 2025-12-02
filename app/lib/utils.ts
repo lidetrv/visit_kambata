@@ -48,11 +48,21 @@ export const parseTripData = (row: any) => {
     return {
       id: row.$id,
       createdAt: row.$createdAt,
+      updatedAt: row.$updatedAt,
       ...parsed,
+      raw: row,  //
     };
   } catch (err) {
     console.error("Failed to parse row.postDetails:", err);
-    return { id: row.$id, postDetails: "" };
+    return { 
+      id: row.$id,
+      createdAt: row.$createdAt,
+      updatedAt: row.$updateAt,
+       postDetails: "",
+       raw: row,
+
+      
+      };
   }
 };
 

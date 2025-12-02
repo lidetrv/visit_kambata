@@ -35,6 +35,24 @@ export const getPostById = async (postId: string) => {
     return post;
 }
 
+//Add this function to your appwrite/posts.ts
+export const updatePost = async (postId: string, data: any) => {
+  try {
+    const response = await tablesDB.updateRow({
+      databaseId: appwriteConfig.databaseId,
+      tableId: appwriteConfig.tripCollectionId,
+      rowId: postId,
+      data: {
+        postDetails: JSON.stringify(data),
+      },
+    });
+    return response;
+  } catch (error) {
+    console.error("Error updating post:", error);
+    throw error;
+  }
+};
+
 // appwrite/posts.ts
 import { Query } from "appwrite"
 import { tablesDB, appwriteConfig } from "./client"
