@@ -140,38 +140,6 @@ export default function Blog() {
           paths.
         </p>
 
-        {/* ✅ INSERTED SECTION
-        <div className="max-w-3xl mx-auto mt-10 text-black space-y-4">
-          <h4 className="text-2xl font-bold text-green-600">Our Mission</h4>
-          <p>
-            We aim to promote local tourism, preserve cultural identity, and
-            support community-based travel experiences.
-          </p>
-
-          <h4 className="text-2xl font-bold text-green-600">
-            What Makes Kembata Special
-          </h4>
-          <p>
-            From the towering Mount Hambaricho to the warm hospitality of our
-            people, Kembata offers unforgettable experiences in nature, culture,
-            history, and celebration.
-          </p>
-
-          <h4 className="text-2xl font-bold text-green-600">
-            Why We Created This Site
-          </h4>
-          <p>
-            We believe that sharing accurate information and showcasing the
-            region’s beauty helps visitors travel more confidently while
-            supporting local economies and traditions.
-          </p>
-
-          <h4 className="text-2xl font-bold text-green-600">Join Us</h4>
-          <p>
-            Explore our attractions, learn our culture, and experience the
-            spirit of Kembata. Your adventure begins here.
-          </p>
-        </div> */}
         {/* About Purpose Section - Styled Like Destinations */}
         <h2 className="text-4xl font-extrabold text-green-700 mb-10 mt-20 text-center border-b-4 border-green-500/50 pb-2 max-w-2xl mx-auto">
           Who We Are & What We Stand For
