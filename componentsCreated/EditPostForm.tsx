@@ -12,7 +12,7 @@ import {
 import { Input } from "~/components/ui/input";
 import { Button } from "~/components/ui/button";
 import Editor from "./editor";
-import { useRef, useState } from "react";
+import { useRef, useState, type Key } from "react";
 import type { MDXEditorMethods } from "@mdxeditor/editor";
 import {
   ChipDirective,
@@ -130,7 +130,7 @@ const EditPostFormFixed = ({
   const handleTagRemove = (e: any) => {
     const deletedTagText = e.data.text;
     const currentTags = form.getValues("tags");
-    const updatedTags = currentTags.filter((tag) => tag !== deletedTagText);
+    const updatedTags = currentTags.filter((tag: any) => tag !== deletedTagText);
     form.setValue("tags", updatedTags, { shouldDirty: true });
   };
 
@@ -285,7 +285,7 @@ const EditPostFormFixed = ({
                         deleted={handleTagRemove}
                       >
                         <ChipsDirective>
-                          {field.value.map((tag: string, index) => (
+                          {field.value.map((tag: string, index: Key | null | undefined) => (
                             <ChipDirective
                               key={index}
                               trailingIconCss="e-dlt-btn"

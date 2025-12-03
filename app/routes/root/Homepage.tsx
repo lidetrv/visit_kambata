@@ -228,11 +228,9 @@ export default function HomePage({ loaderData }: Route.ComponentProps) {
       <section className="w-full bg-gray-50 py-10">
         <Carousel images={tourCarouselImages} />
       </section>
-
-      {/* Updated Posts Section with HomePostCard (not PostCard) */}
       <section className="py-10">
-        <div className="trip-grid mb-4 mt-10 mx-4">
-          {allPosts.slice(0, 4).map((post: any) => (
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-7 mb-4 mt-10 mx-auto max-w-6xl lg:max-w-7xl px-4 justify-items-center">
+          {allPosts.slice(0, 3).map((post: any) => (
             <HomePostCard
               key={post.id}
               id={post.id}
