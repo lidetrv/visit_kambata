@@ -35,6 +35,18 @@ const Carousel: React.FC<CarouselProps> = ({ images }) => {
     },
     [isAnimating, CARD_LENGTH]
   );
+  // Add auto-rotation effect
+  useEffect(() => {
+    if (CARD_LENGTH === 0) return;
+
+    const interval = setInterval(() => {
+      if (!isAnimating) {
+        updateCarousel(currentIndex + 1);
+      }
+    }, 2000); // 2 second interval
+
+    return () => clearInterval(interval);
+  }, [currentIndex, isAnimating, updateCarousel, CARD_LENGTH]);
 
   // Click handler for navigation arrows
   const handleNavigation = useCallback(
