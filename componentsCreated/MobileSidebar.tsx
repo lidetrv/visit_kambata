@@ -29,9 +29,6 @@ const MobileSidebar = ({ isAdmin = false }: { isAdmin?: boolean }) => {
         </button>
       </header>
 
-      {/* Add spacing for fixed header
-      <div className="pt-16"></div> */}
-
       {/* Sidebar component */}
       <SidebarComponent
         width={270}
