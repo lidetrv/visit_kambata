@@ -166,7 +166,7 @@ const Explore = ({ loaderData }: Route.ComponentProps) => {
       </section>
 
       {/* 3. FILTER COMPONENT */}
-      <section className="py-8 px-6">
+      <section className="py-8 px-6 lg:pt-16">
         <div className="max-w-6xl mx-auto">
           <div className="flex flex-wrap gap-4 justify-center">
             {filterCategories.map((category) => (
