@@ -172,25 +172,6 @@ const dashboard = ({ loaderData }: Route.ComponentProps) => {
         </div>
 
         {/* You can add another chart or component in the second column here */}
-        <div className="bg-white p-6 rounded-lg shadow">
-          <h2 className="text-xl font-semibold text-dark-100 mb-4">
-            Quick Stats
-          </h2>
-          <div className="space-y-4">
-            <div className="p-4 bg-blue-50 rounded-lg">
-              <p className="text-sm text-gray-600">Total Active Users</p>
-              <p className="text-2xl font-bold text-blue-700">
-                {allUsers.length}
-              </p>
-            </div>
-            <div className="p-4 bg-green-50 rounded-lg">
-              <p className="text-sm text-gray-600">Total Posts</p>
-              <p className="text-2xl font-bold text-green-700">
-                {allPosts.length}
-              </p>
-            </div>
-          </div>
-        </div>
       </section>
 
       {/* Messages Section - This will NOT overlap with navbar */}
