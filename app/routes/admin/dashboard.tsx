@@ -1,7 +1,10 @@
-// dashboard.tsx - Updated with original styling
+// dashboard.tsx - Updated with original styling and pagination
 import { Header, PostCard, StatsCard } from "componentsCreated";
 import { getAllUsers, getUser } from "~/appwrite/auth";
 import type { Route } from "./+types/dashboard";
+import type { LoaderFunctionArgs } from "react-router";
+import { useState } from "react";
+import { useSearchParams } from "react-router";
 import {
   getUserGrowthPerDay,
   getUsersAndPostStats,
@@ -28,7 +31,20 @@ import {
   useryAxis,
 } from "~/constants";
 
-export const clientLoader = async () => {
+interface UsersItineraryCount {
+  id: string;
+  name: string;
+  count: number;
+  imageUrl: string;
+}
+
+export const clientLoader = async ({ request }: LoaderFunctionArgs) => {
+  // Get page from URL for messages
+  const url = new URL(request.url);
+  const page = parseInt(url.searchParams.get("page") || "1", 10);
+  const limit = 5;
+  const offset = (page - 1) * limit;
+
   const [user, dashboardStats, posts, userGrowth, allUsers, messages] =
     await Promise.all([
       getUser(),
@@ -36,8 +52,12 @@ export const clientLoader = async () => {
       getAllPosts(4, 0),
       getUserGrowthPerDay(),
       getAllUsers(4, 0),
-      getMessages(5, 0),
+      getMessages(limit, offset),
     ]);
+
+  // Get total messages for pagination
+  const allMessages = await getMessages(1000, 0);
+  const totalMessages = allMessages.length;
 
   const allPosts = posts.allPosts.map(
     ({ $id, postDetails, title, tags, imageUrls }) => {
@@ -73,13 +93,31 @@ export const clientLoader = async () => {
     userGrowth,
     allUsers: mappedUsers,
     messages: messages || [],
+    totalMessages,
+    page,
   };
 };
 
 const dashboard = ({ loaderData }: Route.ComponentProps) => {
-  const user = loaderData.user as User | null;
-  const { dashboardStats, allPosts, userGrowth, allUsers, messages } =
-    loaderData;
+  const user = loaderData.user as any;
+  const {
+    dashboardStats,
+    allPosts,
+    userGrowth,
+    allUsers,
+    messages,
+    totalMessages,
+    page,
+  } = loaderData;
+
+  const [searchParams] = useSearchParams();
+  const initialPage = Number(searchParams.get("page") || "1");
+  const [currentPage, setCurrentPage] = useState(initialPage);
+
+  const handlePageChange = (page: number) => {
+    setCurrentPage(page);
+    window.location.search = `?page=${page}`;
+  };
 
   return (
     <main className="dashboard wrapper p-0 m-0">
@@ -88,7 +126,7 @@ const dashboard = ({ loaderData }: Route.ComponentProps) => {
         description="Track and Manage created posts in real time."
       />
 
-      <section className="flex flex-col gap-6">
+      <section className="flex flex-col gap-6 wrapper">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 w-full">
           <StatsCard
             headerTitle="Total Users"
@@ -111,7 +149,7 @@ const dashboard = ({ loaderData }: Route.ComponentProps) => {
         </div>
       </section>
 
-      <section className="container">
+      <section className="container wrapper">
         <h1 className="text-xl font-semibold text-dark-100 ">Created Posts</h1>
         <div className="trip-grid">
           {allPosts
@@ -130,7 +168,7 @@ const dashboard = ({ loaderData }: Route.ComponentProps) => {
         </div>
       </section>
 
-      <section className="container grid grid-cols-1 lg:grid-cols-2 gap-5">
+      <section className="container wrapper grid grid-cols-1 lg:grid-cols-2 gap-5">
         <div className="bg-white p-6 rounded-lg shadow">
           <ChartComponent
             id="chart-1"
@@ -175,7 +213,14 @@ const dashboard = ({ loaderData }: Route.ComponentProps) => {
       </section>
 
       {/* Messages Section - This will NOT overlap with navbar */}
-      <MessageSection messages={messages} />
+      <div className="wrapper">
+        <MessageSection
+          messages={messages}
+          totalMessages={totalMessages}
+          currentPage={currentPage}
+          onPageChange={handlePageChange}
+        />
+      </div>
 
       <section className="user-trip wrapper "></section>
     </main>
