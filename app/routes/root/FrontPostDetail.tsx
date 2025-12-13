@@ -35,7 +35,9 @@ const FrontPostDetail = ({ loaderData }: Route.ComponentProps) => {
     <main className="travel-detail wrapper">
       <section className="container wrapper-md">
         <header>
-          <h1 className="p-40-semibold !text-success-500">{post?.title}</h1>
+          <h1 className="p-40-semibold !text-success-500 pt-12">
+            {post?.title}
+          </h1>
           <div className="flex items-center gap-5">
             <InfoPill
               text={formatDate(post?.createdAt)}
