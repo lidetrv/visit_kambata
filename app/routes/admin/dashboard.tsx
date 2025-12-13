@@ -4,7 +4,7 @@ import { getAllUsers, getUser } from "~/appwrite/auth";
 import type { Route } from "./+types/dashboard";
 import type { LoaderFunctionArgs } from "react-router";
 import { useState } from "react";
-import { useSearchParams } from "react-router";
+import { useSearchParams, useNavigate } from "react-router";
 import {
   getUserGrowthPerDay,
   getUsersAndPostStats,
@@ -98,7 +98,7 @@ export const clientLoader = async ({ request }: LoaderFunctionArgs) => {
   };
 };
 
-const dashboard = ({ loaderData }: Route.ComponentProps) => {
+const Dashboard = ({ loaderData }: Route.ComponentProps) => {
   const user = loaderData.user as any;
   const {
     dashboardStats,
@@ -111,22 +111,27 @@ const dashboard = ({ loaderData }: Route.ComponentProps) => {
   } = loaderData;
 
   const [searchParams] = useSearchParams();
+  const navigate = useNavigate();
   const initialPage = Number(searchParams.get("page") || "1");
   const [currentPage, setCurrentPage] = useState(initialPage);
 
-  const handlePageChange = (page: number) => {
-    setCurrentPage(page);
-    window.location.search = `?page=${page}`;
+  const handlePageChange = (newPage: number) => {
+    setCurrentPage(newPage);
+    // Use React Router navigation instead of window.location
+    const params = new URLSearchParams(searchParams.toString());
+    params.set("page", newPage.toString());
+    navigate(`?${params.toString()}`, { replace: true });
   };
 
   return (
     <main className="dashboard wrapper p-0 m-0">
+      {/* Fixed Header - Remove duplicate user name */}
       <Header
-        title={`Welcome ${user?.name ?? "Guest"} 👋`}
+        title="Welcome Back 👋"
         description="Track and Manage created posts in real time."
       />
 
-      <section className="flex flex-col gap-6 wrapper">
+      <section className="flex flex-col gap-6 container">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 w-full">
           <StatsCard
             headerTitle="Total Users"
@@ -149,7 +154,7 @@ const dashboard = ({ loaderData }: Route.ComponentProps) => {
         </div>
       </section>
 
-      <section className="container wrapper">
+      <section className="container">
         <h1 className="text-xl font-semibold text-dark-100 ">Created Posts</h1>
         <div className="trip-grid">
           {allPosts
@@ -168,7 +173,7 @@ const dashboard = ({ loaderData }: Route.ComponentProps) => {
         </div>
       </section>
 
-      <section className="container wrapper grid grid-cols-1 lg:grid-cols-2 gap-5">
+      <section className="container grid grid-cols-1 lg:grid-cols-2 gap-5">
         <div className="bg-white p-6 rounded-lg shadow">
           <ChartComponent
             id="chart-1"
@@ -213,18 +218,16 @@ const dashboard = ({ loaderData }: Route.ComponentProps) => {
       </section>
 
       {/* Messages Section - This will NOT overlap with navbar */}
-      <div className="wrapper">
-        <MessageSection
-          messages={messages}
-          totalMessages={totalMessages}
-          currentPage={currentPage}
-          onPageChange={handlePageChange}
-        />
-      </div>
+      <MessageSection
+        messages={messages}
+        totalMessages={totalMessages}
+        currentPage={currentPage}
+        onPageChange={handlePageChange}
+      />
 
       <section className="user-trip wrapper "></section>
     </main>
   );
 };
 
-export default dashboard;
+export default Dashboard;
