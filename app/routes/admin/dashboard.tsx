@@ -3,7 +3,7 @@ import { Header, PostCard, StatsCard } from "componentsCreated";
 import { getAllUsers, getUser } from "~/appwrite/auth";
 import type { Route } from "./+types/dashboard";
 import type { LoaderFunctionArgs } from "react-router";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useSearchParams, useNavigate } from "react-router";
 import {
   getUserGrowthPerDay,
@@ -115,12 +115,24 @@ const Dashboard = ({ loaderData }: Route.ComponentProps) => {
   const initialPage = Number(searchParams.get("page") || "1");
   const [currentPage, setCurrentPage] = useState(initialPage);
 
+  // Sync currentPage with URL when it changes
+  useEffect(() => {
+    const pageFromUrl = Number(searchParams.get("page") || "1");
+    if (pageFromUrl !== currentPage) {
+      setCurrentPage(pageFromUrl);
+    }
+  }, [searchParams, currentPage]);
+
   const handlePageChange = (newPage: number) => {
-    setCurrentPage(newPage);
-    // Use React Router navigation instead of window.location
+    // Update URL without full page reload
     const params = new URLSearchParams(searchParams.toString());
     params.set("page", newPage.toString());
-    navigate(`?${params.toString()}`, { replace: true });
+
+    // Try different navigation methods
+    navigate(`?${params.toString()}`, {
+      replace: true,
+      preventScrollReset: true,
+    });
   };
 
   return (

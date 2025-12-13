@@ -3,7 +3,7 @@ import { FaChevronLeft, FaChevronRight } from "react-icons/fa"; // Using react-i
 
 // Define the type for a carousel item
 interface CarouselItem {
-  title: any;
+  title?: any;
   src: string;
   alt: string;
 }
