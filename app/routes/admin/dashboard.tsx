@@ -1,4 +1,4 @@
-// dashboard.tsx - Updated
+// dashboard.tsx - Updated with original styling
 import { Header, PostCard, StatsCard } from "componentsCreated";
 import { getAllUsers, getUser } from "~/appwrite/auth";
 import type { Route } from "./+types/dashboard";
@@ -8,8 +8,7 @@ import {
 } from "~/appwrite/dashboard";
 import { getAllPosts } from "~/appwrite/posts";
 import { getMessages } from "~/appwrite/messages";
-
-import MessageSection from "./MessageSection"; // Import MessageSection
+import MessageSection from "./MessageSection";
 import {
   Category,
   ChartComponent,
@@ -67,22 +66,13 @@ export const clientLoader = async () => {
     imageUrl: user.imageUrl || "/assets/images/avatar-placeholder.png",
   }));
 
-  // Map raw message rows to the UI Message shape expected by MessageSection
-  const mappedMessages = (messages || []).map((m: any) => ({
-    id: m.$id ?? m.id,
-    name: m.name ?? m.senderName ?? "",
-    email: m.email ?? m.senderEmail ?? "",
-    message: m.message ?? m.body ?? "",
-    createdAt: m.$createdAt ?? m.createdAt,
-  }));
-
   return {
     user,
     dashboardStats,
     allPosts,
     userGrowth,
     allUsers: mappedUsers,
-    messages: mappedMessages,
+    messages: messages || [],
   };
 };
 
@@ -122,7 +112,7 @@ const dashboard = ({ loaderData }: Route.ComponentProps) => {
       </section>
 
       <section className="container">
-        <h1 className="text-xl font-semibold text-dark-100">Created Posts</h1>
+        <h1 className="text-xl font-semibold text-dark-100 ">Created Posts</h1>
         <div className="trip-grid">
           {allPosts
             .slice(0, 4)
@@ -140,50 +130,73 @@ const dashboard = ({ loaderData }: Route.ComponentProps) => {
         </div>
       </section>
 
-      <section className="grid grid-cols-1 lg:grid-cols-2 gap-5">
-        <ChartComponent
-          id="chart-1"
-          primaryXAxis={userXAxis}
-          primaryYAxis={useryAxis}
-          title="User Growth"
-          tooltip={{ enable: true }}
-        >
-          <Inject
-            services={[
-              ColumnSeries,
-              SplineAreaSeries,
-              Category,
-              DataLabel,
-              Tooltip,
-            ]}
-          />
-          <SeriesCollectionDirective>
-            <SeriesDirective
-              dataSource={userGrowth}
-              xName="day"
-              yName="count"
-              type="Column"
-              name="Column"
-              columnWidth={0.3}
-              cornerRadius={{ topLeft: 10, topRight: 10 }}
+      <section className="container grid grid-cols-1 lg:grid-cols-2 gap-5">
+        <div className="bg-white p-6 rounded-lg shadow">
+          <ChartComponent
+            id="chart-1"
+            primaryXAxis={userXAxis}
+            primaryYAxis={useryAxis}
+            title="User Growth"
+            tooltip={{ enable: true }}
+          >
+            <Inject
+              services={[
+                ColumnSeries,
+                SplineAreaSeries,
+                Category,
+                DataLabel,
+                Tooltip,
+              ]}
             />
-            <SeriesDirective
-              dataSource={userGrowth}
-              xName="day"
-              yName="count"
-              type="SplineArea"
-              name="Wave"
-              fill="rgba(71,132,238,0.3)"
-              border={{ width: 2, color: "#4784EE" }}
-            />
-          </SeriesCollectionDirective>
-        </ChartComponent>
+            <SeriesCollectionDirective>
+              <SeriesDirective
+                dataSource={userGrowth}
+                xName="day"
+                yName="count"
+                type="Column"
+                name="Column"
+                columnWidth={0.3}
+                cornerRadius={{ topLeft: 10, topRight: 10 }}
+              />
+              <SeriesDirective
+                dataSource={userGrowth}
+                xName="day"
+                yName="count"
+                type="SplineArea"
+                name="Wave"
+                fill="rgba(71,132,238,0.3)"
+                border={{ width: 2, color: "#4784EE" }}
+              />
+            </SeriesCollectionDirective>
+          </ChartComponent>
+        </div>
+
+        {/* You can add another chart or component in the second column here */}
+        <div className="bg-white p-6 rounded-lg shadow">
+          <h2 className="text-xl font-semibold text-dark-100 mb-4">
+            Quick Stats
+          </h2>
+          <div className="space-y-4">
+            <div className="p-4 bg-blue-50 rounded-lg">
+              <p className="text-sm text-gray-600">Total Active Users</p>
+              <p className="text-2xl font-bold text-blue-700">
+                {allUsers.length}
+              </p>
+            </div>
+            <div className="p-4 bg-green-50 rounded-lg">
+              <p className="text-sm text-gray-600">Total Posts</p>
+              <p className="text-2xl font-bold text-green-700">
+                {allPosts.length}
+              </p>
+            </div>
+          </div>
+        </div>
       </section>
 
-      {/* Use MessageSection component */}
+      {/* Messages Section - This will NOT overlap with navbar */}
       <MessageSection messages={messages} />
 
-      <section className="user-trip wrapper"></section>
+      <section className="user-trip wrapper "></section>
     </main>
   );
 };

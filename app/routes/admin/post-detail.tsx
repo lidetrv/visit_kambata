@@ -1,158 +1,162 @@
-import React, { useEffect, useState } from "react";
-import TestimonialCard from "../root/TestimonialCard";
-// import TestimonialCard from "./TestimonialCard";
+import type { LoaderFunctionArgs } from "react-router";
+import { getPostById, deletePost } from "~/appwrite/posts";
+import type { Route } from "./+types/post-detail";
+import { cn, formatDate, parseTripData, timeAgo } from "~/lib/utils";
+import { Header, InfoPill } from "componentsCreated";
+import {
+  ChipDirective,
+  ChipListComponent,
+  ChipsDirective,
+} from "@syncfusion/ej2-react-buttons";
+import MarkdownRenderer from "componentsCreated/MarkdownRenderer";
+import { Button } from "~/components/ui/button";
+import { useNavigate } from "react-router";
+import { useState } from "react";
+import EditPostForm from "componentsCreated/EditPostForm";
+// import EditPostForm from "~/components/EditPostForm"; // Make sure this path is correct
 
-interface Testimonial {
-  text: string;
-  avatar: string;
-  name: string;
-  rating: number;
-}
+export const loader = async ({ params }: LoaderFunctionArgs) => {
+  const { postId } = params;
 
-// Mock testimonial data
-const testimonials: Testimonial[] = [
-  {
-    text: "Intuitive interface. Lightning-fast performance. Reliable security.",
-    avatar:
-      "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?q=80&w=160&h=160&auto=format&fit=crop",
-    name: "Michael Thompson",
-    rating: 5,
-  },
-  {
-    text: "Amazing experience! Everything was smooth and professional.",
-    avatar:
-      "https://images.unsplash.com/photo-1531123897727-8f129e1688ce?q=80&w=160&h=160&auto=format&fit=crop",
-    name: "Sarah Williams",
-    rating: 4,
-  },
-  {
-    text: "Great support and easy to use. Highly recommended!",
-    avatar:
-      "https://images.unsplash.com/photo-1529626455594-4ff0802cfb7e?q=80&w=160&h=160&auto=format&fit=crop",
-    name: "John Doe",
-    rating: 5,
-  },
-];
+  if (!postId) throw new Error("Post Id is required!");
 
-export default function TestimonialCarousel() {
-  const [currentSlide, setCurrentSlide] = useState(0);
+  const row = await getPostById(postId);
+  const post = parseTripData(row);
 
-  const nextSlide = () => {
-    setCurrentSlide((prev) =>
-      prev === testimonials.length - 1 ? 0 : prev + 1
+  return { post };
+};
+
+const PostDetail = ({ loaderData }: Route.ComponentProps) => {
+  const { post } = loaderData;
+  const navigate = useNavigate();
+  const [isEditing, setIsEditing] = useState(false);
+
+  //checking the debug
+  console.log("Post data in PostDetail: ", post);
+  console.log("Post raw data: ", post?.raw);
+  const handleDelete = async () => {
+    if (!post?.id) return;
+
+    if (
+      !window.confirm(
+        "Are you sure you want to delete this post? This action cannot be undone."
+      )
+    ) {
+      return;
+    }
+
+    try {
+      await deletePost(post.id);
+      alert("Post deleted successfully!");
+      navigate("/posts");
+    } catch (error) {
+      console.error("Error deleting post:", error);
+      alert("Failed to delete post. Please try again.");
+    }
+  };
+
+  const handleEditSuccess = () => {
+    setIsEditing(false);
+    // You can either refresh the page or update the post data
+    window.location.reload(); // Simple refresh to get updated data
+  };
+
+  if (isEditing) {
+    return (
+      <main className="travel-detail wrapper">
+        <Header title="Edit Post" description="Update your post details" />
+        <EditPostForm
+          post={post}
+          onCancel={() => setIsEditing(false)}
+          onSuccess={handleEditSuccess}
+        />
+      </main>
     );
-  };
-
-  const prevSlide = () => {
-    setCurrentSlide((prev) =>
-      prev === 0 ? testimonials.length - 1 : prev - 1
-    );
-  };
-
-  const goToSlide = (index: number) => {
-    setCurrentSlide(index);
-  };
-
-  // Auto slide every 5 seconds
-  useEffect(() => {
-    const interval = setInterval(() => {
-      nextSlide();
-    }, 5000);
-    return () => clearInterval(interval);
-  }, []);
+  }
 
   return (
-    <div className="w-full max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
-      <div className="text-center mb-8 sm:mb-12">
-        <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-3 sm:mb-4">
-          What Our Visitors Say
-        </h2>
-        <p className="text-base sm:text-lg text-gray-600">
-          Discover experiences from travelers like you
-        </p>
+    <main className="travel-detail wrapper">
+      <Header
+        title="Post Details"
+        description="View and manage created posts"
+      />
+
+      <div className="flex justify-end gap-4 mb-6">
+        <Button
+          onClick={() => setIsEditing(true)}
+          variant="outline"
+          className="bg-blue-500 text-white hover:bg-blue-600"
+        >
+          Edit Post
+        </Button>
+        <Button
+          onClick={handleDelete}
+          variant="destructive"
+          className="bg-red-500 text-white hover:bg-red-600"
+        >
+          Delete Post
+        </Button>
       </div>
 
-      <div className="relative">
-        {/* Carousel wrapper - responsive height */}
-        <div className="relative h-[420px] sm:h-[380px] md:h-[350px] overflow-hidden rounded-lg sm:rounded-xl pt-4 sm:pt-8 pb-12 sm:pb-16">
-          {testimonials.map((testimonial, index) => (
-            <div
-              key={index}
-              className={`absolute top-0 left-0 w-full h-full transition-transform duration-700 ease-in-out px-2 sm:px-4 ${
-                index === currentSlide
-                  ? "translate-x-0"
-                  : index < currentSlide
-                    ? "-translate-x-full"
-                    : "translate-x-full"
-              }`}
-            >
-              <div className="flex justify-center items-center h-full px-2 sm:px-4">
-                <TestimonialCard testimonial={testimonial} />
-              </div>
-            </div>
-          ))}
-        </div>
-
-        {/* Slider indicators */}
-        <div className="absolute z-30 flex -translate-x-1/2 bottom-6 sm:bottom-8 left-1/2 space-x-2 sm:space-x-3">
-          {testimonials.map((_, index) => (
-            <button
-              key={index}
-              type="button"
-              className={`w-2.5 h-2.5 sm:w-3 sm:h-3 rounded-full transition-colors ${
-                index === currentSlide
-                  ? "bg-blue-600"
-                  : "bg-gray-300 hover:bg-gray-400"
-              }`}
-              aria-current={index === currentSlide ? "true" : "false"}
-              aria-label={`Slide ${index + 1}`}
-              onClick={() => goToSlide(index)}
-            ></button>
-          ))}
-        </div>
-
-        {/* Slider controls - responsive positioning and size */}
-        <button
-          type="button"
-          className="absolute top-1/2 left-2 sm:left-4 z-30 flex items-center justify-center w-8 h-8 sm:w-10 sm:h-10 bg-white/90 rounded-full shadow-lg hover:bg-white transition-all -translate-y-1/2 border border-gray-200"
-          onClick={prevSlide}
-        >
-          <svg
-            className="w-4 h-4 sm:w-5 sm:h-5 text-gray-800"
-            xmlns="http://www.w3.org/2000/svg"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth={2}
-              d="m15 19-7-7 7-7"
+      <section className="container wrapper-md">
+        <header>
+          <h1 className="p-40-semibold !text-success-500">{post?.title}</h1>
+          <div className="flex items-center gap-5">
+            <InfoPill
+              text={formatDate(post?.createdAt)}
+              image="/assets/icons/calendar.svg"
             />
-          </svg>
-        </button>
-        <button
-          type="button"
-          className="absolute top-1/2 right-2 sm:right-4 z-30 flex items-center justify-center w-8 h-8 sm:w-10 sm:h-10 bg-white/90 rounded-full shadow-lg hover:bg-white transition-all -translate-y-1/2 border border-gray-200"
-          onClick={nextSlide}
-        >
-          <svg
-            className="w-4 h-4 sm:w-5 sm:h-5 text-gray-800"
-            xmlns="http://www.w3.org/2000/svg"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth={2}
-              d="m9 5 7 7-7 7"
+            <InfoPill
+              text={post?.location}
+              image="/assets/icons/location-mark.svg"
             />
-          </svg>
-        </button>
-      </div>
-    </div>
+          </div>
+        </header>
+        <section className="gallery">
+          {post?.imageUrls.map((url: string, i: number) => (
+            <img
+              src={url}
+              key={i}
+              className={cn(
+                "w-full rounded-xl object-cover",
+                i === 0
+                  ? "md:col-span-2 row-span-2 h-[330px]"
+                  : "md:row-span-1 h-[150px]"
+              )}
+            />
+          ))}
+        </section>
+        <section className="flex gap-3 md:gap-5 flex-wrap items-center">
+          <ChipListComponent id="travel-chip">
+            <ChipsDirective>
+              {post?.tags.map((tag: string, i: number) => (
+                <ChipDirective
+                  key={i}
+                  text={tag}
+                  cssClass={`!text-base !font-medium !px-4 ${i === 0 ? "!bg-pink-50 !text-pink-500" : i === 1 ? "!bg-primary-50 !text-primary-500" : i === 2 ? "!bg-success-50 !text-success-500" : "!bg-amber-50 !text-amber-500"}`}
+                />
+              ))}
+            </ChipsDirective>
+          </ChipListComponent>
+          <ChipListComponent>
+            <ChipsDirective>
+              <ChipDirective
+                text={`Posted ${timeAgo(post?.createdAt)}`}
+                cssClass="!bg-success-500 !text-white !font-small"
+              />
+            </ChipsDirective>
+          </ChipListComponent>
+        </section>
+        <section className="title">
+          <article>
+            <h3>{post?.subTitle}</h3>
+            <p>{post?.titleDescription}</p>
+          </article>
+        </section>
+        <MarkdownRenderer content={post?.postDetails ?? ""} />
+      </section>
+    </main>
   );
-}
+};
+
+export default PostDetail;
